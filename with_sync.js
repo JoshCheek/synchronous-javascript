@@ -8,6 +8,10 @@ var waitForTimeouts = function(timeouts, callback) {
   }
 }
 
+console.log("-----  With Sync  -----")
+console.log("This does not return from the function call until the async operations are complete");
+console.log();
+
 var timeoutTimes = [1, 4, 2, 3]
 console.log("before call");
 waitForTimeouts(timeoutTimes, seconds => console.log(`Waited ${seconds} seconds`))

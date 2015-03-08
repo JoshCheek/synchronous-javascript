@@ -1,2 +1,4 @@
 #!/bin/sh
-babel-node example.js
+babel-node without_sync.js
+printf "\033[34m--------------------------------------\033[39m\n"
+babel-node with_sync.js
