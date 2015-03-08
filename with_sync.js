@@ -20,7 +20,7 @@ console.log("-----  With Sync  -----")
 console.log("This does not return from the function call until the async operations are complete");
 console.log();
 
-var timeoutTimes = [1, 4, 2, 3]
+var timeoutTimes = [1, 4, 2, 3] // these don't seem to actually be seconds, but w/e
 console.log("before call");
 waitForTimeouts(timeoutTimes, seconds => console.log(`Waited ${seconds} seconds`))
 console.log("after call");

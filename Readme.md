@@ -46,3 +46,9 @@ Run against the examples:
 ```sh
 $ ./run
 ```
+
+Currently (node 0.10.26, babel 4.7.3),
+this will hang forever.
+You might kill it with `C-c`,
+but it starts a node process that it doesn't clean up,
+so you'll have to go kill that independently.
