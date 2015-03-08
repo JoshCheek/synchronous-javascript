@@ -1,11 +1,29 @@
 var Synchronize = require('./synchronize')
-var Sync = new Synchronize()
+
+// move into Synchronize if this works
+var halt = function*(haltCondition) {
+  if(haltCondition()) {
+    // push onto the queue
+    // end current execution stack
+    setTimeout(() => halt(haltCondition))
+  } else {
+    yield _
+  }
+}
+
+// Ideally this would be a stack-local variable,
+// as in the JS equivalent of a therad-local variable
+var sync = new Synchronize(halt)
 
 var waitForTimeouts = function(timeouts, callback) {
   for(var i=0; i < timeouts.length; ++i) {
     let timeout = timeouts[i]
-    setTimeout( ()=>callback(timeout), timeout)
+    setTimeout(
+      sync.up(callback(timeout)),
+      timeout
+    )
   }
+  sync.down();
 }
 
 console.log("-----  With Sync  -----")
