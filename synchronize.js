@@ -8,12 +8,14 @@ class Synchronize {
 
   // receives a normal function (synchronous)
   // returns a function that can be passed to an asynchronous call
-  up(cb) {
+  up(cb, arg) {
     var waitId = this.getNextWaitId()
-    () => {
-      cb()
-      doneWaiting(waitId)
-    }
+    console.log(`Wait on ${waitId} (${this.waiting})`);
+    return (() => {
+      cb(arg)
+      this.doneWaiting(waitId)
+      console.log(`Wait on ${waitId} (${this.waiting})`);
+    })
   }
 
   down() {
@@ -30,7 +32,7 @@ class Synchronize {
   }
 
   doneWaiting(id) {
-    if(!arrayDelete(this.waiting, id))
+    if(!this.arrayDelete(this.waiting, id))
       throw(`Id ${id} not in ${this.waiting}`)
   }
 

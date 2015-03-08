@@ -19,7 +19,7 @@ var waitForTimeouts = function(timeouts, callback) {
   for(var i=0; i < timeouts.length; ++i) {
     let timeout = timeouts[i]
     setTimeout(
-      sync.up(callback(timeout)),
+      sync.up(callback, timeout),
       timeout
     )
   }
