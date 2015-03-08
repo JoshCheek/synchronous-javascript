@@ -1,9 +1,5 @@
-class Synchronize {
-  constructor() {
-  }
-}
-
-var Sync = new Synchronize();
+var Synchronize = require('./synchronize')
+var Sync = new Synchronize()
 
 var waitForTimeouts = function(timeouts, callback) {
   for(var i=0; i < timeouts.length; ++i) {
