@@ -31,6 +31,48 @@ transpiling, or possibly you'd have to completely reimplement
 javaScript, and use asm.js to reduce the performance hit.
 Not really sure. I'll keep contemplating it.
 
+Possible solution with transpiling
+----------------------------------
+
+I had attempted to do this before in js [here](https://gist.github.com/JoshCheek/47c3fb69640202ec72c7),
+but my rewriter wasn't good enough, and I don't really know js,
+and in Ruby [here](https://github.com/JoshCheek/event_loop/blob/5b22d1216690c56aecf744873a35f064fc4a69dc/Readme.md#event-loop)
+but I got [sidetracked](https://github.com/rspec/rspec-core/pull/1858).
+
+I still think it could work. Here's an example that should work
+with code rewriting (I can't tell, yet, if it will be able
+to handle more complex examples):
+
+```javascript
+// initial code
+var pretendThisIsAsync = function(var) {
+  return var
+}
+
+var a = 0
+a = pretendThisIsAsync 1
+a + 2
+```
+
+It should be able to be rewritten as this:
+
+```javascript
+// rewritten code
+var pretendThisIsAsync = function(var, async) {
+  async(var)
+}
+
+var a = 0
+call 1, -> result {
+  a = result
+  a + 2
+}
+```
+
+But of course, you'd have to pass the `async` fn on every function call,
+or use a keyword to tell the transpiler when to do this,
+becuse it doesn't actually stop the stack, it instead puts all execution
+into callbacks... essentially, turning the stack into a queue.
 
 Instructions
 ------------
