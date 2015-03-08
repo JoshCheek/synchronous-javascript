@@ -1,25 +1,25 @@
 class Synchronize {
-  constructor(halt) {
+  constructor() {
     // does js have private vars? I don't really want these public
     this.nextWaitId = 0
-    this.waiting    = []
-    this.halt = halt
+    this.waiting    = [] // could probably replace with a simple counter
   }
 
   // receives a normal function (synchronous)
   // returns a function that can be passed to an asynchronous call
   up(cb, arg) {
     var waitId = this.getNextWaitId()
-    console.log(`Wait on ${waitId} (${this.waiting})`);
-    return (() => {
+    // console.log(`Wait on ${waitId} (${this.waiting})`);
+    return () => {
       cb(arg)
       this.doneWaiting(waitId)
-      console.log(`Wait on ${waitId} (${this.waiting})`);
-    })
+      // console.log(`Wait on ${waitId} (${this.waiting})`);
+    }
   }
 
   down() {
-    this.halt(_ => 0 < waiting.length)
+    while(this.waiting.length != 0)
+      Synchronize.requeueCurrentStack()
   }
 
   // -----  private  -----
@@ -45,6 +45,17 @@ class Synchronize {
     ary.pop()
     return true;
   }
+}
+
+// Doesn't work, because it returns to the caller,
+// instead of to the toplevel env.
+//
+// Might wind up that the only way to do it is start with the
+// generator, and call into their code.
+//
+// I need to let my brain soak in this a bit.
+Synchronize.requeueCurrentStack = function*() {
+  // setTimeout(() => yield _, 0)
 }
 
 module.exports = Synchronize
